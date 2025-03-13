@@ -1,5 +1,6 @@
 package com.devapps.justclass.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,33 +25,39 @@ import com.devapps.justclass.ui.theme.peach
 
 @Composable
 fun HomeScreen() {
-Column(
-    modifier = Modifier
+    Column(modifier = Modifier
         .fillMaxSize()
-        .padding(20.dp)
-        .verticalScroll(rememberScrollState())
-) {
-    Spacer(modifier = Modifier
-        .height(30.dp)
-    )
-    Text("Keep up with\n your classes",
-        modifier = Modifier
-            .fillMaxWidth(),
-        fontSize = 30.sp,
-        color = Color.Black
-        )
-    Spacer(modifier = Modifier
-        .height(20.dp)
-    )
-    Column(
-        modifier = Modifier
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        .background(Color.White)
     ) {
-        InfoCard(stat = "3", title = "Classes created", color = cream)
-        InfoCard(stat = "6", title = "Students enrolled", color = aqua)
-        InfoCard(stat = "5", title = "Students paid", color = lilac)
-        InfoCard(stat = "31", title = "Homeworks given", color = peach)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp)
+                .background(Color.White)
+                .verticalScroll(rememberScrollState())
+        ) {
+            Spacer(modifier = Modifier
+                .height(30.dp)
+            )
+            Text("Keep up with\n your classes",
+                modifier = Modifier
+                    .fillMaxWidth(),
+                fontSize = 30.sp,
+                color = Color.Black
+            )
+            Spacer(modifier = Modifier
+                .height(20.dp)
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                InfoCard(stat = "3", title = "Classes created", color = cream)
+                InfoCard(stat = "6", title = "Students enrolled", color = aqua)
+                InfoCard(stat = "5", title = "Students paid", color = lilac)
+                InfoCard(stat = "31", title = "Homeworks given", color = peach)
+            }
+        }
     }
-}
 }

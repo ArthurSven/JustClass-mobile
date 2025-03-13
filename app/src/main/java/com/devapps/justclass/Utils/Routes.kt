@@ -61,7 +61,7 @@ object EditPaymentRoute : Routes {
 }
 
 object HomeworkRoute : Routes {
-    override val route = "home_screen"
+    override val route = "homework_screen"
 }
 
 object AddHomeworkRoute : Routes {

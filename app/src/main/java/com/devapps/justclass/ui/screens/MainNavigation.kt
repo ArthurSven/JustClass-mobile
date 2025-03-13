@@ -17,6 +17,7 @@ import com.devapps.justclass.Utils.WelcomeRoute
 import com.devapps.justclass.data.auth.GoogleAuthClient
 import com.devapps.justclass.ui.viewmodels.GoogleAuthViewModel
 import com.google.android.gms.auth.api.identity.Identity
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -56,7 +57,16 @@ fun JustClassNavigation() {
             WelcomeScreen(justClassMainNavController)
         }
         composable(LandingRoute.route) {
-            MainLayout()
+            MainLayout(
+                justClassMainNavController,
+                googleAuthClient.getSignedInUser(),
+                onSignOut = {
+                    coroutineScope.launch {
+                        googleAuthClient.signOut()
+                        justClassMainNavController.navigate(SignOutRoute.route)
+                    }
+                }
+            )
         }
         composable(SignOutRoute.route) {
             LaunchedEffect(Unit) {

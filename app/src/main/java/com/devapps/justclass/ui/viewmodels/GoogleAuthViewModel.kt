@@ -8,6 +8,7 @@ import com.devapps.justclass.data.auth.SignInState
 import com.devapps.justclass.data.model.UserData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 class GoogleAuthViewModel(googleAuthClient: GoogleAuthClient) : ViewModel() {
 
@@ -19,5 +20,18 @@ class GoogleAuthViewModel(googleAuthClient: GoogleAuthClient) : ViewModel() {
 
     fun setUser(userData: UserData) {
         _userData.value = userData
+    }
+
+    fun onSignInResult(result: com.devapps.justclass.data.model.SignInResult) {
+        _state.update {
+            it.copy(
+                isSignInSuccessful = result.data != null,
+                signInError = result.errorMessage
+            )
+        }
+    }
+
+    fun resetState() {
+        _state.update { SignInState() }
     }
 }

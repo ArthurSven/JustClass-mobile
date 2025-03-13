@@ -1,5 +1,6 @@
 package com.devapps.justclass.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,11 +46,13 @@ fun StudentListScreen() {
     }
 
 Box(modifier = Modifier
-    .fillMaxSize()) {
+    .fillMaxSize()
+    .background(Color.White)) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp)
+            .background(Color.White)
     ) {
         Spacer(modifier = Modifier
             .height(30.dp)
@@ -98,7 +101,8 @@ Box(modifier = Modifier
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(10.dp),
+            .padding(10.dp)
+            .background(Color.Transparent),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.End
     ) {
@@ -154,5 +158,5 @@ fun CreateStudentScreen() {
 @Composable
 @Preview(showBackground = true)
 fun StudentScreenPreview() {
-    CreateStudentScreen()
+    StudentListScreen()
 }

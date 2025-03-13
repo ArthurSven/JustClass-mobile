@@ -1,5 +1,6 @@
 package com.devapps.justclass.ui.composables
 
+import androidx.activity.result.IntentSenderRequest
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,44 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devapps.justclass.R
 import com.devapps.justclass.ui.theme.peach
+import kotlinx.coroutines.launch
 
-@Composable
-fun SocialLoginButton() {
-    ElevatedButton(
-        onClick = { /*TODO*/ },
-        shape = RoundedCornerShape(10.dp),
-        colors = ButtonDefaults.elevatedButtonColors(
-            containerColor = Color.Black,
-            contentColor = Color.White
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp)
-        ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(painter = painterResource(id = R.drawable.googlesignin),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-            )
-            Spacer(modifier = Modifier
-                .width(30.dp))
-            Text(
-                text = "Get Started",
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                modifier = Modifier
-                    .padding(start = 30.dp)
-            )
-        }
-    }
-}
 
 @Composable
 fun InfoCard(
