@@ -12,8 +12,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Book
+import androidx.compose.material.icons.outlined.DateRange
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Money
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -32,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devapps.justclass.ui.theme.feintGrey
+import com.devapps.justclass.ui.theme.textGrey
 
 @Composable
 fun ClassListScreen() {
@@ -114,5 +124,169 @@ fun ClassListScreen() {
                     tint = Color.White)
             }
         }
+    }
+}
+
+@Composable
+fun CreateClassScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+    ) {
+        Spacer(
+            modifier = Modifier
+                .height(30.dp)
+        )
+        Text(
+            text = "Create a Class",
+            color = Color.Black,
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp
+        )
+        Spacer(
+            modifier = Modifier
+                .height(10.dp)
+        )
+        Text(
+            text = "Create your classes to track them",
+            color = textGrey,
+            fontSize = 16.sp
+        )
+        Spacer(
+            modifier = Modifier
+                .height(50.dp)
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            OutlinedTextField(
+                value = "",
+                onValueChange = {
+
+                },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = feintGrey
+                ),
+                label = {
+                    Text(text = "Classname")
+                },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Outlined.Book,
+                        contentDescription = null
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = "",
+                onValueChange = {
+
+                },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = feintGrey
+                ),
+                label = {
+                    Text(text = "Start date")
+                },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Outlined.DateRange,
+                        contentDescription = null
+                    )
+                },
+                placeholder = {
+                    Text(text = "DD/MM/YYYY")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            OutlinedTextField(value = "", onValueChange = {
+
+            },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = feintGrey
+                ),
+                label = {
+                    Text(text = "End date")
+                },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Outlined.DateRange,
+                        contentDescription = null
+                    )
+                },
+                placeholder = {
+                    Text(text = "DD/MM/YYYY")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            OutlinedTextField(value = "",
+                onValueChange = {
+
+            },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = feintGrey
+                ),
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowDropDown,
+                        contentDescription = null
+                    )
+                },
+                placeholder = {
+                    Text(text = "Level")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            OutlinedTextField(value = "", onValueChange = {
+
+            },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = feintGrey
+                ),
+                label = {
+                    Text(text = "Price (MWK)")
+                },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Outlined.Money,
+                        contentDescription = null
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            Spacer(modifier = Modifier
+                .height(20.dp)
+            )
+            ElevatedButton(
+                onClick = { /*TODO*/ },
+                colors = ButtonDefaults.elevatedButtonColors(
+                    containerColor = Color.Black,
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(0.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+
+            ) {
+                Text(text = "Create Class",
+                    fontSize = 18.sp)
+            }
+        }
+
     }
 }

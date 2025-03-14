@@ -42,6 +42,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -62,6 +63,7 @@ import coil3.request.ImageRequest
 import coil3.request.allowHardware
 import coil3.request.bitmapConfig
 import com.devapps.justclass.R
+import com.devapps.justclass.Utils.AddStudentRoute
 import com.devapps.justclass.Utils.ClassroomRoute
 import com.devapps.justclass.Utils.HomeRoute
 import com.devapps.justclass.Utils.HomeworkRoute
@@ -72,6 +74,9 @@ import com.devapps.justclass.Utils.WelcomeRoute
 import com.devapps.justclass.data.model.UserData
 import com.devapps.justclass.ui.composables.BottomNavItem
 import com.devapps.justclass.ui.theme.feintGrey
+import com.devapps.justclass.ui.viewmodels.StudentViewModel
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,10 +86,12 @@ userData: UserData?,
 onSignOut: () -> Unit
 ) {
     val context = LocalContext.current.applicationContext
+    val coroutineScope = rememberCoroutineScope()
     val showMenu = remember { mutableStateOf(false) }
     var selectedItemIndex by rememberSaveable {
         mutableStateOf(0)
     }
+    val studentViewModel: StudentViewModel = koinViewModel { parametersOf(userData) }
 
     BackHandler {
         justClassMainNavController.popBackStack(WelcomeRoute.route, false)
@@ -113,10 +120,10 @@ onSignOut: () -> Unit
             "h/work",
             Icons.Filled.LibraryBooks,
             Icons.Outlined.LibraryBooks,
-            StudentRoute.route
+            HomeworkRoute.route
         ),
         BottomNavItem(
-            "payments",
+            "payment",
             Icons.Filled.CurrencyExchange,
             Icons.Outlined.CurrencyExchange,
             PaymentRoute.route
@@ -283,7 +290,15 @@ onSignOut: () -> Unit
                 ClassListScreen()
             }
             composable(StudentRoute.route) {
-                StudentListScreen()
+                StudentListScreen(
+                    justClassAuthNavController
+                )
+            }
+            composable(AddStudentRoute.route) {
+                CreateStudentScreen(
+                     userData,
+                    studentViewModel
+                )
             }
             composable(HomeworkRoute.route) {
                 HomeworkListScreen()

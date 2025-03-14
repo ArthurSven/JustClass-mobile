@@ -8,7 +8,8 @@ data class Student(
     val lastname: String,
     val email: String,
     val phone: String,
-    val teacher: String
+    val teacher: String?,
+    val userid: String?
 )
 
 @Serializable
@@ -18,5 +19,6 @@ data class StudentResponse(
     val lastname: String,
     val email: String,
     val phone: String,
-    val teacher: String
+    val teacher: String?,
+    val userid: String?
 )

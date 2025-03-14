@@ -9,7 +9,8 @@ data class Homework(
     val page: String,
     val startdate: String,
     val duedate: String,
-    val teacher: String
+    val teacher: String,
+    val userid: String
 )
 
 @Serializable
@@ -20,5 +21,6 @@ data class HomeworkResponse(
     val page: String,
     val startdate: String,
     val duedate: String,
-    val teacher: String
+    val teacher: String,
+    val userid: String
 )

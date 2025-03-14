@@ -9,7 +9,8 @@ data class Payment(
     val level: String,
     val date: String,
     val amount: String,
-    val teacher: String
+    val teacher: String,
+    val userid: String
 )
 
 @Serializable
@@ -20,5 +21,6 @@ data class PaymentResponse(
     val level: String,
     val date: String,
     val amount: String,
-    val teacher: String
+    val teacher: String,
+    val userid: String
 )

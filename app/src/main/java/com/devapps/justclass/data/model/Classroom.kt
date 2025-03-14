@@ -9,7 +9,8 @@ data class Classroom(
     val enddate: String,
     val level: String,
     val price: String,
-    val teacher: String
+    val teacher: String,
+    val userid: String
 )
 
 @Serializable
@@ -20,5 +21,6 @@ data class ClassroomResponse(
     val enddate: String,
     val level: String,
     val price: String,
-    val teacher: String
+    val teacher: String,
+    val userid: String
 )
