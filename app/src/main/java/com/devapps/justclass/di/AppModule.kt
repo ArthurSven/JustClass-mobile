@@ -4,6 +4,8 @@ import com.devapps.justclass.Utils.Constants.API_KEY
 import com.devapps.justclass.Utils.Constants.BASE_URL
 import com.devapps.justclass.data.auth.GoogleAuthClient
 import com.devapps.justclass.data.model.UserData
+import com.devapps.justclass.data.repository.ClassRoomRepository
+import com.devapps.justclass.data.repository.ClassRoomRepositoryImpl
 import com.devapps.justclass.data.repository.StudentRepository
 import com.devapps.justclass.data.repository.StudentRepositoryImpl
 import com.devapps.justclass.ui.viewmodels.GoogleAuthViewModel
@@ -59,6 +61,18 @@ val appModule = module {
 
     single<StudentRepository> {
         StudentRepositoryImpl(
+            supabaseClient = get()
+        )
+    }
+
+    single {
+        ClassRoomRepositoryImpl(
+            supabaseClient = get()
+        )
+    }
+
+    single<ClassRoomRepository> {
+        ClassRoomRepositoryImpl(
             supabaseClient = get()
         )
     }

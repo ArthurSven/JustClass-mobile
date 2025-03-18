@@ -2,8 +2,10 @@ package com.devapps.justclass.ui.composables
 
 import androidx.activity.result.IntentSenderRequest
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,11 +16,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
@@ -44,7 +49,10 @@ import androidx.compose.ui.unit.sp
 import com.devapps.justclass.R
 import com.devapps.justclass.data.auth.GoogleAuthClient
 import com.devapps.justclass.data.model.StudentResponse
+import com.devapps.justclass.ui.state.CreateUiState
+import com.devapps.justclass.ui.theme.feintGrey
 import com.devapps.justclass.ui.theme.peach
+import com.devapps.justclass.ui.theme.textGrey
 import com.devapps.justclass.ui.viewmodels.StudentViewModel
 import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.launch
@@ -100,7 +108,7 @@ fun StudentCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
-            .height(150.dp),
+            .height(200.dp),
         colors = CardDefaults.elevatedCardColors(
             containerColor = Color.White
         ),
@@ -143,8 +151,12 @@ fun StudentCard(
 fun StudentCardDetail(title: String, info: String) {
     Row {
         Text(text = "${title}: ",
-            fontWeight = FontWeight.Bold)
-        Text(text = info)
+            fontWeight = FontWeight.Bold,
+            color = Color.Black
+        )
+        Text(text = info,
+            color = Color.Black
+        )
     }
 }
 
@@ -162,7 +174,7 @@ fun StudentList(
     val googleClientAuth by lazy {
         GoogleAuthClient(
             context,
-            oneTapClient = Identity.getSignInClient(context)
+            Identity.getSignInClient(context)
         )
     }
 
@@ -178,8 +190,37 @@ fun StudentList(
         }
     }
 
-    when(uiState) {
+    if (isLoading) {
+        repeat(4) {
+            ElevatedCard(onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .height(150.dp),
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = Color.LightGray
+                ),
+                shape = RoundedCornerShape(15.dp),
+                elevation = CardDefaults.elevatedCardElevation(
+                    hoveredElevation = 8.dp,
+                    defaultElevation = 8.dp
+                )
+            ) {
 
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+        }
+    } else {
+        LazyColumn() {
+            items(students) { student ->
+                StudentCard(
+                    firstname = student.firstname,
+                    lastname = student.lastname,
+                    email = student.email,
+                    phone = student.phone
+                )
+            }
+        }
     }
 
 }

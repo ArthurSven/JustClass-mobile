@@ -18,7 +18,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material.icons.outlined.Search
@@ -31,8 +30,6 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -63,12 +60,15 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun StudentListScreen(
-    justClassAuthNavController: NavController
+    justClassAuthNavController: NavController,
+    studentViewModel: StudentViewModel
 ) {
 
     var search by rememberSaveable {
         mutableStateOf("")
     }
+
+    var selectedCategory by rememberSaveable { mutableStateOf(0) }
 
 Box(modifier = Modifier
     .fillMaxSize()
@@ -123,7 +123,8 @@ Box(modifier = Modifier
                 .fillMaxWidth()
         )
         StudentList(
-
+        studentViewModel,
+            selectCategory = selectedCategory
         )
     }
     Column(

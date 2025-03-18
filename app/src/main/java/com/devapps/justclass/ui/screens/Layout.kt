@@ -291,7 +291,8 @@ onSignOut: () -> Unit
             }
             composable(StudentRoute.route) {
                 StudentListScreen(
-                    justClassAuthNavController
+                    justClassAuthNavController,
+                    studentViewModel
                 )
             }
             composable(AddStudentRoute.route) {
