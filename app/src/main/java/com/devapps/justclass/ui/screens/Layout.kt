@@ -63,6 +63,7 @@ import coil3.request.ImageRequest
 import coil3.request.allowHardware
 import coil3.request.bitmapConfig
 import com.devapps.justclass.R
+import com.devapps.justclass.Utils.AddClassroomRoute
 import com.devapps.justclass.Utils.AddStudentRoute
 import com.devapps.justclass.Utils.ClassroomRoute
 import com.devapps.justclass.Utils.HomeRoute
@@ -74,6 +75,7 @@ import com.devapps.justclass.Utils.WelcomeRoute
 import com.devapps.justclass.data.model.UserData
 import com.devapps.justclass.ui.composables.BottomNavItem
 import com.devapps.justclass.ui.theme.feintGrey
+import com.devapps.justclass.ui.viewmodels.ClassroomViewModel
 import com.devapps.justclass.ui.viewmodels.StudentViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -92,6 +94,7 @@ onSignOut: () -> Unit
         mutableStateOf(0)
     }
     val studentViewModel: StudentViewModel = koinViewModel { parametersOf(userData) }
+    val classroomViewModel: ClassroomViewModel = koinViewModel { parametersOf(userData) }
 
     BackHandler {
         justClassMainNavController.popBackStack(WelcomeRoute.route, false)
@@ -287,7 +290,10 @@ onSignOut: () -> Unit
                 HomeScreen()
             }
             composable(ClassroomRoute.route) {
-                ClassListScreen()
+                ClassListScreen(
+                    justClassAuthNavController,
+                    classroomViewModel
+                )
             }
             composable(StudentRoute.route) {
                 StudentListScreen(
@@ -299,6 +305,12 @@ onSignOut: () -> Unit
                 CreateStudentScreen(
                      userData,
                     studentViewModel
+                )
+            }
+            composable(AddClassroomRoute.route) {
+                CreateClassScreen(
+                    userData,
+                    classroomViewModel
                 )
             }
             composable(HomeworkRoute.route) {

@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -20,12 +21,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -53,6 +65,7 @@ import com.devapps.justclass.ui.state.CreateUiState
 import com.devapps.justclass.ui.theme.feintGrey
 import com.devapps.justclass.ui.theme.peach
 import com.devapps.justclass.ui.theme.textGrey
+import com.devapps.justclass.ui.viewmodels.ClassroomViewModel
 import com.devapps.justclass.ui.viewmodels.StudentViewModel
 import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.launch
@@ -148,6 +161,64 @@ fun StudentCard(
 }
 
 @Composable
+fun ClassCard(
+    classname: String,
+    startDate: String,
+    endDate: String,
+    level: String,
+    price: String) {
+    ElevatedCard(onClick = { /*TODO*/ },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .height(IntrinsicSize.Max),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = Color.White
+        ),
+        shape = RoundedCornerShape(15.dp),
+        elevation = CardDefaults.elevatedCardElevation(
+            hoveredElevation = 8.dp,
+            defaultElevation = 8.dp
+        )
+    ) {
+        Box(modifier = Modifier
+            .fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Max)
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Spacer(modifier = Modifier
+                    .height(10.dp)
+                )
+                StudentCardDetail("Class", classname)
+                StudentCardDetail("Level", level)
+                StudentCardDetail("Price", price)
+                StudentCardDetail("Start date", startDate)
+                StudentCardDetail("End date", endDate)
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+               IconButton(
+                   onClick = { /*TODO*/ },
+                   ) {
+                   Icon(
+                       imageVector = Icons.Default.MoreVert,
+                       contentDescription = null,
+                       tint = Color.Black
+                   )
+               } 
+            }
+        }
+    }
+}
+
+@Composable
 fun StudentCardDetail(title: String, info: String) {
     Row {
         Text(text = "${title}: ",
@@ -159,6 +230,8 @@ fun StudentCardDetail(title: String, info: String) {
         )
     }
 }
+
+
 
 @Composable
 fun StudentList(
@@ -222,8 +295,132 @@ fun StudentList(
             }
         }
     }
+}
+
+@Composable
+fun ClassList(
+    classroomViewModel: ClassroomViewModel,
+) {
+    val uiState by classroomViewModel.uiState.collectAsState()
+    var studentToDelete by remember { mutableStateOf<StudentResponse?>(null) }
+    val showDeleteDialog = remember { mutableStateOf(false) }
+    val context = LocalContext.current.applicationContext
+    val coroutineScope = rememberCoroutineScope()
+
+    val googleClientAuth by lazy {
+        GoogleAuthClient(
+            context,
+            Identity.getSignInClient(context)
+        )
+    }
+
+    val classrooms by classroomViewModel.classrooms.collectAsState()
+    val isLoading by classroomViewModel.isLoading.collectAsState()
+
+    val userId = googleClientAuth.getSignedInUser()?.userId
+
+    LaunchedEffect(userId) {
+        if (userId != null) {
+            classroomViewModel.setCreatedBy(userId)
+            classroomViewModel.getClassRoomsByTeacher(userId)
+        }
+    }
+
+    if (isLoading) {
+        repeat(4) {
+            ElevatedCard(onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .height(150.dp),
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = Color.LightGray
+                ),
+                shape = RoundedCornerShape(15.dp),
+                elevation = CardDefaults.elevatedCardElevation(
+                    hoveredElevation = 8.dp,
+                    defaultElevation = 8.dp
+                )
+            ) {
+
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+        }
+    } else {
+        LazyColumn() {
+            items(classrooms) { classRoom ->
+                ClassCard(
+                    classname = classRoom.classname,
+                    startDate = classRoom.startdate,
+                    endDate = classRoom.enddate,
+                    level = classRoom.level,
+                    price = classRoom.price
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ClassLevelDropDown(
+    languageLevelList: List<String>,
+    selectedLevel: String,
+    onLevelSelected: (String) -> Unit
+) {
+
+    var expanded by remember { mutableStateOf(false) } // State for dropdown expansion
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+        modifier = Modifier
+    ) {
+        OutlinedTextField(
+            value = selectedLevel,
+            onValueChange = {
+            },
+            readOnly = true,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = feintGrey
+            ),
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                Icon(
+                    imageVector = Icons.Filled.ArrowDropDown,
+                    contentDescription = null
+                )
+            },
+            placeholder = {
+                Text(text = "Level")
+            },
+            modifier = Modifier
+                .menuAnchor()
+                .fillMaxWidth()
+        )
+        // Dropdown menu
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            languageLevelList.forEach { level ->
+                // Dropdown menu item
+                DropdownMenuItem(
+                    text = { Text(text = level) },
+                    onClick = {
+                        onLevelSelected(level) // Update selected category
+                        expanded = false // Collapse the dropdown
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+    }
 
 }
+
+
 
 @Composable
 @Preview(showBackground = true)

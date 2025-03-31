@@ -6,8 +6,11 @@ import com.devapps.justclass.data.auth.GoogleAuthClient
 import com.devapps.justclass.data.model.UserData
 import com.devapps.justclass.data.repository.ClassRoomRepository
 import com.devapps.justclass.data.repository.ClassRoomRepositoryImpl
+import com.devapps.justclass.data.repository.PaymentRepository
+import com.devapps.justclass.data.repository.PaymentRepositoryImpl
 import com.devapps.justclass.data.repository.StudentRepository
 import com.devapps.justclass.data.repository.StudentRepositoryImpl
+import com.devapps.justclass.ui.viewmodels.ClassroomViewModel
 import com.devapps.justclass.ui.viewmodels.GoogleAuthViewModel
 import com.devapps.justclass.ui.viewmodels.StudentViewModel
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -44,6 +47,13 @@ val appModule = module {
         )
     }
 
+    viewModel { (userData: UserData) ->
+        ClassroomViewModel(
+            classRoomRepository = get(),
+            userData = userData
+        )
+    }
+
     single<SupabaseClient> {
         createSupabaseClient(
             BASE_URL,
@@ -73,6 +83,18 @@ val appModule = module {
 
     single<ClassRoomRepository> {
         ClassRoomRepositoryImpl(
+            supabaseClient = get()
+        )
+    }
+
+    single<PaymentRepositoryImpl> {
+        PaymentRepositoryImpl(
+            supabaseClient = get()
+        )
+    }
+
+    single<PaymentRepository> {
+        PaymentRepositoryImpl(
             supabaseClient = get()
         )
     }

@@ -32,7 +32,7 @@ class StudentViewModel(
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     private val _student = MutableStateFlow<GetStudentByIdUiState>(GetStudentByIdUiState.Idle)
-    val pitch: StateFlow<GetStudentByIdUiState> = _student
+    val student: StateFlow<GetStudentByIdUiState> = _student
 
 
 
@@ -118,9 +118,26 @@ class StudentViewModel(
             }
 
         } catch (e: Exception) {
-            _uiState.value = CreateUiState.Error("Error fetching yourstudents: ${e.message}")
+            _uiState.value = CreateUiState.Error("Error fetching your students: ${e.message}")
         } finally {
             _isLoading.value = false
         }
     }
+
+    fun deleteStudent(studentid: String) {
+
+        viewModelScope.launch {
+                val result = studentRepository.deleteStudent(studentid)
+
+                when(result) {
+                    is Response.Success -> {
+                        _uiState.value = CreateUiState.Success
+                    }
+                    is Response.Error -> {
+                        _uiState.value = CreateUiState.Error("Error: " + result.error)
+                    }
+                }
+        }
+    }
+
 }
